@@ -1,0 +1,19 @@
+import numpy as np
+import IPython as IP
+import time
+import numpy.matlib
+
+def play_warn():
+    fs = 48000
+    duration = 0.5
+    f = 50
+    rep = 10
+    t = np.linspace(0., duration*rep, int(fs * duration*rep))  # ( start, stop, num of data )
+    t0 = np.linspace(0., duration, int(fs * duration))  # ( start, stop, num of data )    
+    x = np.sin(f * (2. * np.pi) *4/duration* t0**2)*np.sin(f * (2. * np.pi) * t0/100)+np.random.rand(int(fs * duration))/10*np.sin(f * (2. * np.pi) * t0/2)
+    x = np.matlib.repmat(x,1,rep)
+    for ind in range(1000):
+        x[1:-4000] = x[1:-4000] + x[4000:-1]
+    IP.display.display(IP.display.Audio(x/100, rate=fs, autoplay=True))
+
+play_warn()
